@@ -92,15 +92,6 @@
     self.seekCircle.strokeStart = 0.0f;
 }
 
-- (void)incrementByAmount:(NSTimeInterval)time
-{
-    NSLog(@"GOING");
-    [CATransaction setDisableActions:YES];
-    self.seekCircle.strokeEnd = time;
-    self.seekCircle.strokeStart = self.seekCircle.strokeEnd;
-    [CATransaction setDisableActions:NO];
-}
-
 - (void)configureAnimationTimeWithDuration:(CFTimeInterval)duration
 {
     // Configure animation

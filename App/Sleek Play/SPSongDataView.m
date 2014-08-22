@@ -38,8 +38,8 @@
 {
     // TODO: Init all subviews with appropriate data
     
-    const CGFloat width = self.bounds.size.width + 20.0f;
-    const CGFloat height = self.bounds.size.height + 20.0f;
+    const CGFloat width = self.bounds.size.width + 40.0f;
+//    const CGFloat height = self.bounds.size.height + 20.0f;
     
     self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
     self.albumCoverView.center = self.center;

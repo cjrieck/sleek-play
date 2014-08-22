@@ -18,7 +18,10 @@
 @property (strong, nonatomic) SPSongControlsView *songControlsView;
 @property (strong, nonatomic) SPCircularControlsView *circularControls;
 @property (strong, nonatomic) UIPanGestureRecognizer *panGesture;
-@property (strong, nonatomic) UISwipeGestureRecognizer *swipeGesture;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureRight;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureLeft;
+@property (strong, nonatomic) UITapGestureRecognizer *singleTap;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
 
 @property (assign, nonatomic) CGFloat previousVolumeLevel;
 @property (assign, nonatomic) CGFloat lastTranslation;
@@ -55,8 +58,9 @@
     [self.view addSubview:volumeView];
     
     const CGFloat width = CGRectGetWidth(self.view.frame);
+    const CGFloat height = CGRectGetHeight(self.view.frame);
     
-    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
+    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     self.songDataView.backgroundColor = [UIColor clearColor];
     [self createParallaxEffectForView:self.songDataView];
     
@@ -68,19 +72,32 @@
     self.circularControls.delegate = self;
     [self.circularControls setPlayingStatus:YES];
     
-    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    [self.view addGestureRecognizer:self.panGesture];
+    [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
     
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAndShow)];
-    singleTap.numberOfTapsRequired = 1;
-    singleTap.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:singleTap];
+//    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+//    [self.view addGestureRecognizer:self.panGesture];
     
-    self.swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    self.swipeGesture.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:self.swipeGesture];
+    self.swipeGestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeR:)];
+    self.swipeGestureRight.numberOfTouchesRequired = 1;
+    [self.swipeGestureRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:self.swipeGestureRight];
+
+    self.swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeL:)];
+    self.swipeGestureLeft.numberOfTouchesRequired = 1;
+    [self.swipeGestureLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:self.swipeGestureLeft];
     
-    self.previousVolumeLevel = 0.2f;
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    self.longPress.numberOfTouchesRequired = 1;
+    self.longPress.minimumPressDuration = 1.0;
+    [self.view addGestureRecognizer:self.longPress];
+    
+    self.singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAndShow)];
+    self.singleTap.numberOfTapsRequired = 1;
+    self.singleTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:self.singleTap];
+
+    self.previousVolumeLevel = self.musicPlayerController.volume;
     
     [self.view addSubview:self.songDataView];
     [self.view addSubview:self.songControlsView];
@@ -93,54 +110,62 @@
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
 }
 
-- (void)handleSwipe:(UISwipeGestureRecognizer *)swipeGesture
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    switch (swipeGesture.direction) {
-        case UISwipeGestureRecognizerDirectionLeft:
-            NSLog(@"Left");
-            [self didRequestPreviousSong];
-            break;
-        case UISwipeGestureRecognizerDirectionRight:
-            [self didRequestNextSong];
-            break;
-        case UISwipeGestureRecognizerDirectionDown:
-        case UISwipeGestureRecognizerDirectionUp:
-            break;
+//    if ( [gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] ) {
+//        NSLog(@"Simultaneous gestures");
+//        return YES;
+//    }
+//    return NO;
+    return YES;
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)longPress
+{
+    [longPress requireGestureRecognizerToFail:self.singleTap];
+    NSLog(@"Long ass tap");
+    
+    if ( longPress.state == UIGestureRecognizerStateChanged ) {
+        const CGFloat screenHeight = CGRectGetHeight(self.view.bounds);
+        CGFloat fingerPositionY = [self.longPress locationInView:self.view].y;
+        
+        NSLog(@"%f", fingerPositionY);
+        
+        CGFloat newVolume = fingerPositionY / (screenHeight*75.0f);
+        
+        // going UP
+        if ( fingerPositionY > self.lastTranslation ) {
+            self.previousVolumeLevel -= newVolume;
+        }
+        else {
+            self.previousVolumeLevel += newVolume;
+        }
+        
+        if ( self.previousVolumeLevel >= 1.0f ) {
+            self.previousVolumeLevel = 1.0f;
+        }
+        
+        if ( self.previousVolumeLevel <= 0.0f ) {
+            self.previousVolumeLevel = 0.0f;
+        }
+        
+        self.musicPlayerController.volume = self.previousVolumeLevel;
+        [self.circularControls animateVolumeStrokeWithEndValue:self.previousVolumeLevel];
+        
+        self.lastTranslation = fingerPositionY;
     }
 }
 
-- (void)handlePan:(UIPanGestureRecognizer *)panGesture
+- (void)handleSwipeR:(UISwipeGestureRecognizer *)swipeGesture
 {
-    [self.panGesture requireGestureRecognizerToFail:self.swipeGesture];
-    
-    const CGFloat screenHeight = CGRectGetHeight(self.view.bounds);
-    CGFloat fingerPositionY = [self.panGesture locationInView:self.view].y;
-    
-    NSLog(@"%f", fingerPositionY);
-    
-    CGFloat newVolume = fingerPositionY / (screenHeight*75.0f);
-    
-    // going UP
-    if ( fingerPositionY > self.lastTranslation ) {
-        self.previousVolumeLevel -= newVolume;
-    }
-    else {
-        self.previousVolumeLevel += newVolume;
-    }
-    
-    if ( self.previousVolumeLevel >= 1.0f ) {
-        self.previousVolumeLevel = 1.0f;
-    }
-    
-    if ( self.previousVolumeLevel <= 0.0f ) {
-        self.previousVolumeLevel = 0.0f;
-    }
-    
-    self.musicPlayerController.volume = self.previousVolumeLevel;
-    [self.circularControls animateVolumeStrokeWithEndValue:self.previousVolumeLevel];
-    
-    self.lastTranslation = fingerPositionY;
+    [self didRequestPreviousSong];
 }
+
+- (void)handleSwipeL:(UISwipeGestureRecognizer *)swipeGesture
+{
+    [self didRequestNextSong];
+}
+
 
 - (void)createParallaxEffectForView:(UIView *)parallaxView
 {
@@ -168,7 +193,6 @@
 - (void)didRequestNextSong
 {
     [self.musicPlayerController skipToNextItem];
-//    [self.circularControls resetSeekCircle];
 }
 
 - (void)didRequestPreviousSong
