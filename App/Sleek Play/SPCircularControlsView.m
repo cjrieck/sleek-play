@@ -7,7 +7,6 @@
 //
 
 #import "SPCircularControlsView.h"
-#import "SPCircleLayer.h"
 
 @interface SPCircularControlsView ()
 

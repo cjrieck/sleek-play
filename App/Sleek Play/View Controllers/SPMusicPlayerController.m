@@ -55,8 +55,6 @@
     [self.view addSubview:volumeView];
     
     const CGFloat width = CGRectGetWidth(self.view.frame);
-    const CGFloat height = (3.0f * CGRectGetHeight(self.view.frame))/4.0f;
-    const CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     
     self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
     self.songDataView.backgroundColor = [UIColor clearColor];
@@ -64,12 +62,7 @@
     
     if ( [self.musicPlayerController nowPlayingItem] ) {
         self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
-//        [self.musicPlayerController pause];
     }
-    
-//    self.songControlsView = [[SPSongControlsView alloc] initWithFrame:CGRectMake(0, height, width, statusBarHeight+statusBarHeight+height/4.0f)];
-//    self.songControlsView.backgroundColor = [UIColor colorWithWhite:0.961 alpha:1.000];
-//    self.songControlsView.isPlaying = NO;
     
     self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
     self.circularControls.delegate = self;
@@ -122,7 +115,6 @@
     
     const CGFloat screenHeight = CGRectGetHeight(self.view.bounds);
     CGFloat fingerPositionY = [self.panGesture locationInView:self.view].y;
-//    CGFloat translationY = [panGesture translationInView:self.view].y;
     
     NSLog(@"%f", fingerPositionY);
     
@@ -188,7 +180,6 @@
     else {
         [self.musicPlayerController skipToBeginning];
     }
-//    [self.circularControls resetSeekCircle];
 }
 
 - (void)didRequestPlaySong
