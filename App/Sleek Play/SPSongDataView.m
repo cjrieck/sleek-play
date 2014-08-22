@@ -41,8 +41,7 @@
     const CGFloat width = self.bounds.size.width + 20.0f;
     const CGFloat height = self.bounds.size.height + 20.0f;
     
-    self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, height, height)];
-//    self.albumCoverView.clipsToBounds = NO;
+    self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
     self.albumCoverView.center = self.center;
     
     [self addSubview:self.albumCoverView];
@@ -50,8 +49,9 @@
 
 - (void)setPicture
 {
+    const CGFloat width = self.bounds.size.width + 20.0f;
     if ( [self.currentSong valueForProperty:MPMediaItemPropertyArtwork] ) {
-        self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:self.albumCoverView.frame.size];
+        self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:CGSizeMake(width, width)];
     }
     else {
         // TODO: Put in filler image

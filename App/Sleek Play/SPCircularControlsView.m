@@ -11,9 +11,11 @@
 
 @interface SPCircularControlsView ()
 
-@property (strong, nonatomic) UIView *playPauseCircle;
+@property (strong, nonatomic) UIButton *playPauseCircle;
 @property (strong, nonatomic) CAShapeLayer *seekCircle;
 @property (strong, nonatomic) CAShapeLayer *volumeCircle;
+
+@property (assign, nonatomic) BOOL isPlaying;
 
 @end
 
@@ -30,15 +32,25 @@
 
 - (void)setUpCircles
 {
+    UIVisualEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    blurView.frame = self.bounds;
+    
+    self.playPauseCircle = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 110, 110)];
+    self.playPauseCircle.layer.cornerRadius = 55;
+    self.playPauseCircle.center = self.center;
+    self.playPauseCircle.backgroundColor = [UIColor purpleColor];
+    [self.playPauseCircle addTarget:self action:@selector(playPause) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self addSubview:blurView];
+    [self addSubview:self.playPauseCircle];
+    
     self.volumeCircle = [self setUpLayerWithLineRadius:135 lineWidth:20 borderColor:[UIColor blueColor] fillColor:nil];
     self.seekCircle = [self setUpLayerWithLineRadius:90 lineWidth:70 borderColor:[UIColor greenColor] fillColor:nil];
     
     // Add to parent layer
     [self.layer addSublayer:self.volumeCircle];
     [self.layer addSublayer:self.seekCircle];
-    
-//    [self animateVolumeStrokeWithEndValue:0.7];
-//    [self configureAnimationTimeForLayer:self.seekCircle withDuration:1.0 andEndValue:0.5];
 }
 
 - (CAShapeLayer *)setUpLayerWithLineRadius:(int)radius lineWidth:(int)lineWidth borderColor:(UIColor *)borderColor fillColor:(UIColor *)fillColor
@@ -71,12 +83,15 @@
     return newLayer;
 }
 
+- (void)setPlayingStatus:(BOOL)playing
+{
+    self.isPlaying = playing;
+}
+
 - (void)resetSeekCircle
 {
     self.seekCircle.strokeStart = 0.0f;
 }
-
-//- (void)setDuration:(float)
 
 - (void)incrementByAmount:(NSTimeInterval)time
 {
@@ -89,24 +104,20 @@
 
 - (void)configureAnimationTimeWithDuration:(CFTimeInterval)duration
 {
-    NSLog(@"%f", duration);
     // Configure animation
     CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     drawAnimation.duration            = duration; // "animate over 10 seconds or so.."
     drawAnimation.repeatCount         = 1.0;  // Animate only once..
 //
     // Animate from no part of the stroke being drawn to the entire stroke being drawn
-//    [CATransaction setDisableActions:YES];
     drawAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     drawAnimation.toValue   = [NSNumber numberWithFloat:1.0];
-//    [CATransaction setDisableActions:NO];
-    
+
     // Experiment with timing to get the appearence to look the way you want
     drawAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     
     // Add the animation to the circle
     [self.seekCircle addAnimation:drawAnimation forKey:@"drawCircleAnimation"];
-    
 }
 
 - (void)animateVolumeStrokeWithEndValue:(float)end
@@ -115,6 +126,16 @@
     self.volumeCircle.strokeStart = 0.0f;
     self.volumeCircle.strokeEnd = end;
     [CATransaction setDisableActions:NO];
+}
+
+- (void)playPause
+{
+    if ( self.isPlaying ) {
+        [self.delegate didRequestPauseSong];
+    }
+    else {
+        [self.delegate didRequestPlaySong];
+    }
 }
 
 @end

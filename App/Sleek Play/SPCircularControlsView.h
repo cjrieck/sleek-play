@@ -8,10 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SPCircularControlsDelegate <NSObject>
+
+- (void)didRequestPlaySong;
+- (void)didRequestPauseSong;
+
+@end
+
 @interface SPCircularControlsView : UIView
 
 - (void)resetSeekCircle;
 - (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration;
 - (void)animateVolumeStrokeWithEndValue:(float)end;
+- (void)setPlayingStatus:(BOOL)playing;
+
+@property (weak, nonatomic)id<SPCircularControlsDelegate>delegate;
 
 @end

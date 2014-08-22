@@ -8,19 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SPSongControlsDelegate <NSObject>
-
-- (void)didRequestNextSong;
-- (void)didRequestPreviousSong;
-- (void)didRequestPlaySong;
-- (void)didRequestPauseSong;
-
-@end
+//@protocol SPSongControlsDelegate <NSObject>
+//
+//- (void)didRequestNextSong;
+//- (void)didRequestPreviousSong;
+//- (void)didRequestPlaySong;
+//- (void)didRequestPauseSong;
+//
+//@end
 
 @interface SPSongControlsView : UIView
 
 @property (assign, nonatomic) BOOL isPlaying;
 
-@property (weak, nonatomic)id<SPSongControlsDelegate>delegate;
+//@property (weak, nonatomic)id<SPSongControlsDelegate>delegate;
 
 @end

@@ -11,12 +11,14 @@
 #import "SPSongControlsView.h"
 #import "SPCircularControlsView.h"
 
-@interface SPMusicPlayerController () <SPSongControlsDelegate, UIGestureRecognizerDelegate>
+@interface SPMusicPlayerController () <SPCircularControlsDelegate, UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) MPMusicPlayerController *musicPlayerController;
 @property (strong, nonatomic) SPSongDataView *songDataView;
 @property (strong, nonatomic) SPSongControlsView *songControlsView;
 @property (strong, nonatomic) SPCircularControlsView *circularControls;
+@property (strong, nonatomic) UIPanGestureRecognizer *panGesture;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeGesture;
 
 @property (assign, nonatomic) CGFloat previousVolumeLevel;
 @property (assign, nonatomic) CGFloat lastTranslation;
@@ -49,28 +51,41 @@
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:volumeView];
+    
     const CGFloat width = CGRectGetWidth(self.view.frame);
     const CGFloat height = (3.0f * CGRectGetHeight(self.view.frame))/4.0f;
     const CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     
-    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    self.songDataView.backgroundColor = [UIColor blackColor];
+    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
+    self.songDataView.backgroundColor = [UIColor clearColor];
     [self createParallaxEffectForView:self.songDataView];
     
     if ( [self.musicPlayerController nowPlayingItem] ) {
         self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
-        [self.musicPlayerController pause];
+//        [self.musicPlayerController pause];
     }
     
-    self.songControlsView = [[SPSongControlsView alloc] initWithFrame:CGRectMake(0, height, width, statusBarHeight+height/4.0f)];
-    self.songControlsView.delegate = self;
-    self.songControlsView.backgroundColor = [UIColor colorWithWhite:0.961 alpha:1.000];
-    self.songControlsView.isPlaying = NO;
+//    self.songControlsView = [[SPSongControlsView alloc] initWithFrame:CGRectMake(0, height, width, statusBarHeight+statusBarHeight+height/4.0f)];
+//    self.songControlsView.backgroundColor = [UIColor colorWithWhite:0.961 alpha:1.000];
+//    self.songControlsView.isPlaying = NO;
     
-    self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, statusBarHeight, width, height-statusBarHeight)];
+    self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
+    self.circularControls.delegate = self;
+    [self.circularControls setPlayingStatus:YES];
     
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    [self.view addGestureRecognizer:panGesture];
+    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    [self.view addGestureRecognizer:self.panGesture];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAndShow)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:singleTap];
+    
+    self.swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+    self.swipeGesture.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:self.swipeGesture];
     
     self.previousVolumeLevel = 0.2f;
     
@@ -85,22 +100,40 @@
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
 }
 
+- (void)handleSwipe:(UISwipeGestureRecognizer *)swipeGesture
+{
+    switch (swipeGesture.direction) {
+        case UISwipeGestureRecognizerDirectionLeft:
+            NSLog(@"Left");
+            [self didRequestPreviousSong];
+            break;
+        case UISwipeGestureRecognizerDirectionRight:
+            [self didRequestNextSong];
+            break;
+        case UISwipeGestureRecognizerDirectionDown:
+        case UISwipeGestureRecognizerDirectionUp:
+            break;
+    }
+}
+
 - (void)handlePan:(UIPanGestureRecognizer *)panGesture
 {
+    [self.panGesture requireGestureRecognizerToFail:self.swipeGesture];
+    
     const CGFloat screenHeight = CGRectGetHeight(self.view.bounds);
-    CGFloat translationY = [panGesture translationInView:self.view].y;
-    CGFloat velocityY = [panGesture velocityInView:self.view].y;
+    CGFloat fingerPositionY = [self.panGesture locationInView:self.view].y;
+//    CGFloat translationY = [panGesture translationInView:self.view].y;
     
-    NSLog(@"%f", velocityY);
+    NSLog(@"%f", fingerPositionY);
     
-    CGFloat newVolume = translationY / (screenHeight*50.0f);
+    CGFloat newVolume = fingerPositionY / (screenHeight*75.0f);
     
     // going UP
-    if ( velocityY < 0 ) {
-        self.previousVolumeLevel += newVolume;
+    if ( fingerPositionY > self.lastTranslation ) {
+        self.previousVolumeLevel -= newVolume;
     }
     else {
-        self.previousVolumeLevel -= newVolume;
+        self.previousVolumeLevel += newVolume;
     }
     
     if ( self.previousVolumeLevel >= 1.0f ) {
@@ -111,8 +144,10 @@
         self.previousVolumeLevel = 0.0f;
     }
     
+    self.musicPlayerController.volume = self.previousVolumeLevel;
     [self.circularControls animateVolumeStrokeWithEndValue:self.previousVolumeLevel];
     
+    self.lastTranslation = fingerPositionY;
 }
 
 - (void)createParallaxEffectForView:(UIView *)parallaxView
@@ -131,19 +166,17 @@
 {
     self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
     [self.circularControls resetSeekCircle];
+    
+    NSNumber *duration = [[self.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    
+    NSTimeInterval songDuration = [duration doubleValue];
+    [self.circularControls configureAnimationTimeWithDuration:songDuration];
 }
 
 - (void)didRequestNextSong
 {
     [self.musicPlayerController skipToNextItem];
-    [self.circularControls resetSeekCircle];
-    
-    NSNumber *duration = [[self.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
-    
-    NSTimeInterval songDuration = [duration doubleValue];
-    //    float currentSpot = self.musicPlayerController.currentPlaybackTime;
-    float circleSpot = self.musicPlayerController.currentPlaybackTime / songDuration;
-    [self.circularControls configureAnimationTimeWithDuration:songDuration];
+//    [self.circularControls resetSeekCircle];
 }
 
 - (void)didRequestPreviousSong
@@ -155,23 +188,34 @@
     else {
         [self.musicPlayerController skipToBeginning];
     }
-    [self.circularControls resetSeekCircle];
+//    [self.circularControls resetSeekCircle];
 }
 
 - (void)didRequestPlaySong
 {
     [self.musicPlayerController play];
-//    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateCircle) userInfo:nil repeats:YES];
+    [self.circularControls setPlayingStatus:YES];
 }
 
 - (void)didRequestPauseSong
 {
     [self.musicPlayerController pause];
+    [self.circularControls setPlayingStatus:NO];
 }
 
-- (void)updateCircle
+- (void)hideAndShow
 {
-    [self.circularControls incrementByAmount:1.0];
+    float newAlpha;
+    if ( self.circularControls.alpha == 0.0 ) {
+        newAlpha = 1.0f;
+    }
+    else {
+        newAlpha = 0.0f;
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.circularControls.alpha = newAlpha;
+    }];
 }
 
 @end
