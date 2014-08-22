@@ -7,13 +7,19 @@
 //
 
 #import "SPAppDelegate.h"
+#import "SPMusicPlayerController.h"
 
 @implementation SPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    SPMusicPlayerController *rootViewController = [[SPMusicPlayerController alloc] init];
+    UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    [rootNavController.navigationBar setHidden:YES];
+    self.window.rootViewController = rootNavController;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

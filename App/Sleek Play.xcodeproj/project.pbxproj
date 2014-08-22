@@ -17,9 +17,10 @@
 		01B2384419A7778C00A5DE72 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2384319A7778C00A5DE72 /* XCTest.framework */; };
 		01B2384519A7778C00A5DE72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382A19A7778B00A5DE72 /* Foundation.framework */; };
 		01B2384619A7778C00A5DE72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382E19A7778B00A5DE72 /* UIKit.framework */; };
-		01DB8C9B19A779A50018C027 /* Sleek_PlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8C9619A779A50018C027 /* Sleek_PlayTests.m */; };
 		01DB8C9C19A779A60018C027 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01DB8C9819A779A50018C027 /* InfoPlist.strings */; };
 		01DB8C9D19A779A60018C027 /* Sleek PlayTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01DB8C9A19A779A50018C027 /* Sleek PlayTests-Info.plist */; };
+		01DB8CA119A77A5B0018C027 /* SPMusicPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8CA019A77A5B0018C027 /* SPMusicPlayerController.m */; };
+		01DB8CA319A77CFC0018C027 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DB8CA219A77CFC0018C027 /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,9 +47,13 @@
 		01B2383C19A7778C00A5DE72 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		01B2384219A7778C00A5DE72 /* Sleek PlayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sleek PlayTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B2384319A7778C00A5DE72 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		01DB8C9619A779A50018C027 /* Sleek_PlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sleek_PlayTests.m; sourceTree = "<group>"; };
 		01DB8C9919A779A50018C027 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01DB8C9A19A779A50018C027 /* Sleek PlayTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Sleek PlayTests-Info.plist"; sourceTree = "<group>"; };
+		01DB8C9F19A77A5B0018C027 /* SPMusicPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMusicPlayerController.h; sourceTree = "<group>"; };
+		01DB8CA019A77A5B0018C027 /* SPMusicPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMusicPlayerController.m; sourceTree = "<group>"; };
+		01DB8CA219A77CFC0018C027 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		01DB8CA519A77DD10018C027 /* SPStyleSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPStyleSheet.h; sourceTree = "<group>"; };
+		01DB8CA619A77E0C0018C027 /* UIColor+SPStyleSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+SPStyleSheet.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01DB8CA319A77CFC0018C027 /* MediaPlayer.framework in Frameworks */,
 				01B2382D19A7778B00A5DE72 /* CoreGraphics.framework in Frameworks */,
 				01B2382F19A7778B00A5DE72 /* UIKit.framework in Frameworks */,
 				01B2382B19A7778B00A5DE72 /* Foundation.framework in Frameworks */,
@@ -97,6 +103,7 @@
 		01B2382919A7778B00A5DE72 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01DB8CA219A77CFC0018C027 /* MediaPlayer.framework */,
 				01B2382A19A7778B00A5DE72 /* Foundation.framework */,
 				01B2382C19A7778B00A5DE72 /* CoreGraphics.framework */,
 				01B2382E19A7778B00A5DE72 /* UIKit.framework */,
@@ -108,6 +115,7 @@
 		01B2383019A7778B00A5DE72 /* Sleek Play */ = {
 			isa = PBXGroup;
 			children = (
+				01DB8C9E19A77A070018C027 /* Views */,
 				01CA730F19A7786E00572B45 /* Application */,
 				01CA731019A7787800572B45 /* Data */,
 				01CA731119A7788200572B45 /* Resources */,
@@ -131,6 +139,7 @@
 		01CA730F19A7786E00572B45 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				01DB8CA419A77D840018C027 /* Appearance */,
 				01B2383919A7778B00A5DE72 /* SPAppDelegate.h */,
 				01B2383A19A7778B00A5DE72 /* SPAppDelegate.m */,
 			);
@@ -155,6 +164,8 @@
 		01CA731319A7789200572B45 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				01DB8C9F19A77A5B0018C027 /* SPMusicPlayerController.h */,
+				01DB8CA019A77A5B0018C027 /* SPMusicPlayerController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -162,7 +173,6 @@
 		01DB8C9519A779A50018C027 /* Sleek PlayTests */ = {
 			isa = PBXGroup;
 			children = (
-				01DB8C9619A779A50018C027 /* Sleek_PlayTests.m */,
 				01DB8C9719A779A50018C027 /* Supporting Files */,
 			);
 			name = "Sleek PlayTests";
@@ -176,6 +186,22 @@
 				01DB8C9A19A779A50018C027 /* Sleek PlayTests-Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01DB8C9E19A77A070018C027 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		01DB8CA419A77D840018C027 /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				01DB8CA519A77DD10018C027 /* SPStyleSheet.h */,
+				01DB8CA619A77E0C0018C027 /* UIColor+SPStyleSheet.h */,
+			);
+			name = Appearance;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,7 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01DB8C9B19A779A50018C027 /* Sleek_PlayTests.m in Sources */,
+				01DB8CA119A77A5B0018C027 /* SPMusicPlayerController.m in Sources */,
 				01B2383719A7778B00A5DE72 /* main.m in Sources */,
 				01B2383B19A7778B00A5DE72 /* SPAppDelegate.m in Sources */,
 			);
