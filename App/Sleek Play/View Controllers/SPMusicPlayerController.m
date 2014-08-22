@@ -16,6 +16,26 @@
 
 @implementation SPMusicPlayerController
 
+- (id)init
+{
+    self = [super init];
+    if ( self ) {
+        _musicPlayerController = [MPMusicPlayerController iPodMusicPlayer];
+    }
+    return self;
+}
 
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    
+}
+
+- (void)viewDidLoad
+{
+    
+}
 
 @end
