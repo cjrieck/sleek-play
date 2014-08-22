@@ -19,6 +19,8 @@
 
 @interface SPSongControlsView : UIView
 
+@property (assign, nonatomic) BOOL isPlaying;
+
 @property (weak, nonatomic)id<SPSongControlsDelegate>delegate;
 
 @end
