@@ -19,26 +19,44 @@
 
 @implementation SPSongDataView
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if ( self ) {
+        [self createSubviews];
+    }
+    return self;
+}
+
 - (void)setCurrentSong:(MPMediaItem *)currentSong
 {
     _currentSong = currentSong;
-    [self createSubviews];
+    [self setPicture];
 }
 
 - (void)createSubviews
 {
     // TODO: Init all subviews with appropriate data
     
-    const CGFloat width = self.frame.size.width + 50.0f;
-    const CGFloat height = self.frame.size.height + 50.0f;
+    const CGFloat width = self.bounds.size.width + 20.0f;
+    const CGFloat height = self.bounds.size.height + 20.0f;
     
     self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, height, height)];
-    self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:CGSizeMake(self.frame.size.height, self.frame.size.height)];
-    self.albumCoverView.clipsToBounds = NO;
+//    self.albumCoverView.clipsToBounds = NO;
     self.albumCoverView.center = self.center;
     
     [self addSubview:self.albumCoverView];
 }
 
+- (void)setPicture
+{
+    if ( [self.currentSong valueForProperty:MPMediaItemPropertyArtwork] ) {
+        self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:self.albumCoverView.frame.size];
+    }
+    else {
+        // TODO: Put in filler image
+    }
+    
+}
 
 @end

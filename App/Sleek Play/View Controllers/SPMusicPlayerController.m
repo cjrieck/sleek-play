@@ -29,6 +29,12 @@
         // get all music from ipod library
         MPMediaQuery *allQuery = [[MPMediaQuery alloc] initWithFilterPredicates:nil];
         [_musicPlayerController setQueueWithQuery:allQuery];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleItemChange)
+                                                     name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+                                                   object:nil];
+        [self.musicPlayerController beginGeneratingPlaybackNotifications];
     }
     return self;
 }
@@ -42,7 +48,7 @@
     const CGFloat height = (3.0f * CGRectGetHeight(self.view.frame))/4.0f;
     const CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     
-    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, statusBarHeight, width, height)];
+    self.songDataView = [[SPSongDataView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     self.songDataView.backgroundColor = [UIColor blackColor];
     [self createParallaxEffectForView:self.songDataView];
     
@@ -68,18 +74,19 @@
 
 - (void)createParallaxEffectForView:(UIView *)parallaxView
 {
-    UIInterpolatingMotionEffect *verticalEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    verticalEffect.minimumRelativeValue = @(-5);
-    verticalEffect.maximumRelativeValue = @(5);
-    
     UIInterpolatingMotionEffect *horizontalEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    horizontalEffect.minimumRelativeValue = @(-20);
-    horizontalEffect.maximumRelativeValue = @(20);
+    horizontalEffect.minimumRelativeValue = @(-30);
+    horizontalEffect.maximumRelativeValue = @(30);
     
     UIMotionEffectGroup *effectGroup = [UIMotionEffectGroup new];
-    effectGroup.motionEffects = @[verticalEffect, horizontalEffect];
+    effectGroup.motionEffects = @[horizontalEffect];
     
     [parallaxView addMotionEffect:effectGroup];
+}
+
+- (void)handleItemChange
+{
+    self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
 }
 
 - (void)didRequestNextSong
