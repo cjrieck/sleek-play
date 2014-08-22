@@ -10,4 +10,8 @@
 
 @interface SPCircularControlsView : UIView
 
+- (void)resetSeekCircle;
+- (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration;
+- (void)animateVolumeStrokeWithEndValue:(float)end;
+
 @end
