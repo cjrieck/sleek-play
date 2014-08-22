@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SPSongControlsDelegate <NSObject>
+
+- (void)didRequestNextSong;
+- (void)didRequestPreviousSong;
+- (void)didRequestPlaySong;
+- (void)didRequestPauseSong;
+
+@end
+
 @interface SPSongControlsView : UIView
+
+@property (weak, nonatomic)id<SPSongControlsDelegate>delegate;
 
 @end

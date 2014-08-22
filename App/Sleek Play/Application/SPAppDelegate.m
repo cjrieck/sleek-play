@@ -17,6 +17,9 @@
     
     SPMusicPlayerController *rootViewController = [[SPMusicPlayerController alloc] init];
     UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    rootNavController.navigationBar.barTintColor = [UIColor blueColor];
+//    rootNavController.navigationBar.frame = CGRectZero;
     [rootNavController.navigationBar setHidden:YES];
     self.window.rootViewController = rootNavController;
     
