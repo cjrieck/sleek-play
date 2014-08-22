@@ -10,8 +10,6 @@
 
 @interface SPSongDataView ()
 
-@property (weak, nonatomic) MPMediaItem *currentSong;
-
 @property (strong, nonatomic) UIImageView *albumCoverView;
 @property (strong, nonatomic) UILabel *currentTimeLabel;
 @property (strong, nonatomic) UILabel *totalTimeLabel;
@@ -21,22 +19,23 @@
 
 @implementation SPSongDataView
 
-- (instancetype)initWithSong:(MPMediaItem *)song
+- (void)setCurrentSong:(MPMediaItem *)currentSong
 {
-    self = [super init];
-    if ( self ) {
-        _currentSong = song;
-        [self createSubviews];
-    }
-    return self;
+    _currentSong = currentSong;
+    [self createSubviews];
 }
 
 - (void)createSubviews
 {
     // TODO: Init all subviews with appropriate data
     
-    self.albumCoverView = [[UIImageView alloc] initWithFrame:self.frame];
-    self.albumCoverView.image = [self.currentSong valueForProperty:MPMediaItemPropertyArtwork];
+    const CGFloat width = self.frame.size.width + 50.0f;
+    const CGFloat height = self.frame.size.height + 50.0f;
+    
+    self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, height, height)];
+    self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:CGSizeMake(self.frame.size.height, self.frame.size.height)];
+    self.albumCoverView.clipsToBounds = NO;
+    self.albumCoverView.center = self.center;
     
     [self addSubview:self.albumCoverView];
 }
