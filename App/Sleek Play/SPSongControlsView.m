@@ -62,10 +62,12 @@
 - (void)playPauseSong
 {
     if ( self.isPlaying ) {
-        [self.delegate didRequestPlaySong];
+        [self.delegate didRequestPauseSong];
+        self.isPlaying = NO;
     }
     else {
-        [self.delegate didRequestPauseSong];
+        [self.delegate didRequestPlaySong];
+        self.isPlaying = YES;
     }
 }
 

@@ -10,7 +10,7 @@
 #import "SPSongDataView.h"
 #import "SPSongControlsView.h"
 
-@interface SPMusicPlayerController ()
+@interface SPMusicPlayerController () <SPSongControlsDelegate>
 
 @property (strong, nonatomic) MPMusicPlayerController *musicPlayerController;
 @property (strong, nonatomic) SPSongDataView *songDataView;
@@ -48,11 +48,13 @@
     
     if ( [self.musicPlayerController nowPlayingItem] ) {
         self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
+        [self.musicPlayerController pause];
     }
     
     self.songControlsView = [[SPSongControlsView alloc] initWithFrame:CGRectMake(0, height, width, statusBarHeight+height/4.0f)];
+    self.songControlsView.delegate = self;
     self.songControlsView.backgroundColor = [UIColor colorWithWhite:0.961 alpha:1.000];
-//    self.songControlsView.backgroundColor = [UIColor blackColor];
+    self.songControlsView.isPlaying = NO;
     
     [self.view addSubview:self.songDataView];
     [self.view addSubview:self.songControlsView];
@@ -78,6 +80,32 @@
     effectGroup.motionEffects = @[verticalEffect, horizontalEffect];
     
     [parallaxView addMotionEffect:effectGroup];
+}
+
+- (void)didRequestNextSong
+{
+    [self.musicPlayerController skipToNextItem];
+}
+
+- (void)didRequestPreviousSong
+{
+    NSTimeInterval currentTime = self.musicPlayerController.currentPlaybackTime;
+    if ( currentTime < 2.0 ) {
+        [self.musicPlayerController skipToPreviousItem];
+    }
+    else {
+        [self.musicPlayerController skipToBeginning];
+    }
+}
+
+- (void)didRequestPlaySong
+{
+    [self.musicPlayerController play];
+}
+
+- (void)didRequestPauseSong
+{
+    [self.musicPlayerController pause];
 }
 
 @end
