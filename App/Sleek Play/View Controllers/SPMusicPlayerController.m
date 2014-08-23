@@ -163,12 +163,16 @@
 
 - (void)createParallaxEffectForView:(UIView *)parallaxView
 {
+    UIInterpolatingMotionEffect *verticalEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    verticalEffect.minimumRelativeValue = @(-20);
+    verticalEffect.maximumRelativeValue = @(20);
+    
     UIInterpolatingMotionEffect *horizontalEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    horizontalEffect.minimumRelativeValue = @(-30);
-    horizontalEffect.maximumRelativeValue = @(30);
+    horizontalEffect.minimumRelativeValue = @(-20);
+    horizontalEffect.maximumRelativeValue = @(20);
     
     UIMotionEffectGroup *effectGroup = [UIMotionEffectGroup new];
-    effectGroup.motionEffects = @[horizontalEffect];
+    effectGroup.motionEffects = @[verticalEffect, horizontalEffect];
     
     [parallaxView addMotionEffect:effectGroup];
 }
