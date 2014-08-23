@@ -18,8 +18,9 @@
 @interface SPCircularControlsView : UIView
 
 - (void)resetSeekCircle;
-- (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration;
+- (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration andStartingPoint:(double)start;
 - (void)animateVolumeStrokeWithEndValue:(float)end;
+- (void)animateSeekStrokeWithEndValue:(float)end;
 - (void)setPlayingStatus:(BOOL)playing;
 
 @property (weak, nonatomic)id<SPCircularControlsDelegate>delegate;

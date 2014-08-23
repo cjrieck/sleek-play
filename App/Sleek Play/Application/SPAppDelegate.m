@@ -9,14 +9,20 @@
 #import "SPAppDelegate.h"
 #import "SPMusicPlayerController.h"
 
+@interface SPAppDelegate ()
+
+@property (strong, nonatomic) SPMusicPlayerController *musicPlayerController;
+
+@end
+
 @implementation SPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    SPMusicPlayerController *rootViewController = [[SPMusicPlayerController alloc] init];
-    UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    self.musicPlayerController = [[SPMusicPlayerController alloc] init];
+    UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:self.musicPlayerController];
 //    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 //    rootNavController.navigationBar.barTintColor = [UIColor blueColor];
 //    rootNavController.navigationBar.frame = CGRectZero;
@@ -43,6 +49,12 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSNumber *duration = [[self.musicPlayerController.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    
+    NSTimeInterval songDuration = [duration doubleValue];
+    double currentTime = self.musicPlayerController.musicPlayerController.currentPlaybackTime / songDuration;
+    //    [self.circularControls animateSeekStrokeWithEndValue:currentTime];
+    [self.musicPlayerController.circularControls configureAnimationTimeWithDuration:songDuration-currentTime andStartingPoint:currentTime];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

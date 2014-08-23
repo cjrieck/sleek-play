@@ -92,7 +92,7 @@
     self.seekCircle.strokeStart = 0.0f;
 }
 
-- (void)configureAnimationTimeWithDuration:(CFTimeInterval)duration
+- (void)configureAnimationTimeWithDuration:(CFTimeInterval)duration andStartingPoint:(double)start
 {
     // Configure animation
     CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
@@ -100,7 +100,7 @@
     drawAnimation.repeatCount         = 1.0;  // Animate only once..
 //
     // Animate from no part of the stroke being drawn to the entire stroke being drawn
-    drawAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+    drawAnimation.fromValue = [NSNumber numberWithFloat:start];
     drawAnimation.toValue   = [NSNumber numberWithFloat:1.0];
 
     // Experiment with timing to get the appearence to look the way you want
@@ -115,6 +115,14 @@
     [CATransaction setDisableActions:YES];
     self.volumeCircle.strokeStart = 0.0f;
     self.volumeCircle.strokeEnd = end;
+    [CATransaction setDisableActions:NO];
+}
+
+- (void)animateSeekStrokeWithEndValue:(float)end
+{
+    [CATransaction setDisableActions:YES];
+    self.seekCircle.strokeStart = 0.0f;
+    self.seekCircle.strokeEnd = end;
     [CATransaction setDisableActions:NO];
 }
 

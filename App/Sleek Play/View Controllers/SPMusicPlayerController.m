@@ -9,14 +9,13 @@
 #import "SPMusicPlayerController.h"
 #import "SPSongDataView.h"
 #import "SPSongControlsView.h"
-#import "SPCircularControlsView.h"
 
-@interface SPMusicPlayerController () <SPCircularControlsDelegate, UIGestureRecognizerDelegate>
+@interface SPMusicPlayerController () <SPCircularControlsDelegate>
 
-@property (strong, nonatomic) MPMusicPlayerController *musicPlayerController;
+@property (strong, nonatomic, readwrite) MPMusicPlayerController *musicPlayerController;
+@property (strong, nonatomic, readwrite) SPCircularControlsView *circularControls;
 @property (strong, nonatomic) SPSongDataView *songDataView;
 @property (strong, nonatomic) SPSongControlsView *songControlsView;
-@property (strong, nonatomic) SPCircularControlsView *circularControls;
 @property (strong, nonatomic) UIPanGestureRecognizer *panGesture;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureRight;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureLeft;
@@ -37,13 +36,24 @@
         _musicPlayerController = [MPMusicPlayerController iPodMusicPlayer];
         
         // get all music from ipod library
+        // TODO: make more sophisticated
         MPMediaQuery *allQuery = [[MPMediaQuery alloc] initWithFilterPredicates:nil];
         [_musicPlayerController setQueueWithQuery:allQuery];
+        
+        if ( [_musicPlayerController nowPlayingItem] ) {
+            self.songDataView.currentSong = [_musicPlayerController nowPlayingItem];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleItemChange)
                                                      name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleVolumeChange)
+                                                     name:MPMusicPlayerControllerVolumeDidChangeNotification
+                                                   object:nil];
+        
         [self.musicPlayerController beginGeneratingPlaybackNotifications];
     }
     return self;
@@ -55,6 +65,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectZero];
+    volumeView.center = CGPointMake(-50.0, -50.0);
     [self.view addSubview:volumeView];
     
     const CGFloat width = CGRectGetWidth(self.view.frame);
@@ -64,17 +75,13 @@
     self.songDataView.backgroundColor = [UIColor clearColor];
     [self createParallaxEffectForView:self.songDataView];
     
-    if ( [self.musicPlayerController nowPlayingItem] ) {
-        self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
-    }
-    
     self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
     self.circularControls.delegate = self;
     [self.circularControls setPlayingStatus:YES];
     
     [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
-    
-//    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+
+    //    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 //    [self.view addGestureRecognizer:self.panGesture];
     
     self.swipeGestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeR:)];
@@ -89,7 +96,7 @@
     
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     self.longPress.numberOfTouchesRequired = 1;
-    self.longPress.minimumPressDuration = 1.0;
+    self.longPress.minimumPressDuration = 0.33;
     [self.view addGestureRecognizer:self.longPress];
     
     self.singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAndShow)];
@@ -110,27 +117,13 @@
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-//    if ( [gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] ) {
-//        NSLog(@"Simultaneous gestures");
-//        return YES;
-//    }
-//    return NO;
-    return YES;
-}
-
 - (void)handleLongPress:(UILongPressGestureRecognizer *)longPress
 {
     [longPress requireGestureRecognizerToFail:self.singleTap];
-    NSLog(@"Long ass tap");
     
     if ( longPress.state == UIGestureRecognizerStateChanged ) {
         const CGFloat screenHeight = CGRectGetHeight(self.view.bounds);
         CGFloat fingerPositionY = [self.longPress locationInView:self.view].y;
-        
-        NSLog(@"%f", fingerPositionY);
-        
         CGFloat newVolume = fingerPositionY / (screenHeight*75.0f);
         
         // going UP
@@ -181,13 +174,22 @@
 
 - (void)handleItemChange
 {
+    NSLog(@"Item Changed");
     self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
     [self.circularControls resetSeekCircle];
     
     NSNumber *duration = [[self.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
     
     NSTimeInterval songDuration = [duration doubleValue];
-    [self.circularControls configureAnimationTimeWithDuration:songDuration];
+    double currentTime = self.musicPlayerController.currentPlaybackTime / songDuration;
+//    [self.circularControls animateSeekStrokeWithEndValue:currentTime];
+    [self.circularControls configureAnimationTimeWithDuration:songDuration-currentTime andStartingPoint:currentTime];
+}
+
+- (void)handleVolumeChange
+{
+    [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
+    self.previousVolumeLevel = self.musicPlayerController.volume;
 }
 
 - (void)didRequestNextSong
