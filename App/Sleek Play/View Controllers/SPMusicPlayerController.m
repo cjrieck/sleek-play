@@ -63,6 +63,7 @@
 {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectZero];
     volumeView.center = CGPointMake(-50.0, -50.0);
