@@ -182,7 +182,6 @@
     
     NSTimeInterval songDuration = [duration doubleValue];
     double currentTime = self.musicPlayerController.currentPlaybackTime / songDuration;
-//    [self.circularControls animateSeekStrokeWithEndValue:currentTime];
     [self.circularControls configureAnimationTimeWithDuration:songDuration-currentTime andStartingPoint:currentTime];
 }
 

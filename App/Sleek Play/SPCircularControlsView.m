@@ -130,9 +130,18 @@
 {
     if ( self.isPlaying ) {
         [self.delegate didRequestPauseSong];
+        CFTimeInterval pausedTime = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.seekCircle.speed = 0.0f;
+        self.seekCircle.timeOffset = pausedTime;
     }
     else {
         [self.delegate didRequestPlaySong];
+        CFTimeInterval pausedTime = self.seekCircle.timeOffset;
+        self.seekCircle.speed = 1.0f;
+        self.seekCircle.timeOffset = 0.0f;
+        self.seekCircle.beginTime = 0.0f;
+        CFTimeInterval timeSincePause = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+        self.seekCircle.beginTime = timeSincePause;
     }
 }
 
