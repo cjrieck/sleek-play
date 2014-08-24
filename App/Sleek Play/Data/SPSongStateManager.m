@@ -13,6 +13,7 @@
 @property (weak, nonatomic) MPMediaItem *nowPlayingSong;
 
 @property (assign, nonatomic) NSTimeInterval currentPlaybackTime;
+@property (assign, nonatomic) CFTimeInterval songDuration;
 @property (assign, nonatomic) BOOL isPlaying;
 
 @end
@@ -61,6 +62,8 @@
 - (void)setNowPlayingSong:(MPMediaItem *)nowPlayingSong
 {
     _nowPlayingSong = nowPlayingSong;
+    NSNumber *duration = [nowPlayingSong valueForKey:MPMediaItemPropertyPlaybackDuration];
+    self.songDuration = [duration doubleValue];
 }
 
 - (MPMediaItem *)currentSong
@@ -72,6 +75,11 @@
 {
     self.currentPlaybackTime = [[MPMusicPlayerController iPodMusicPlayer] currentPlaybackTime];
     return self.currentPlaybackTime;
+}
+
+- (CFTimeInterval)currentSongDuration
+{
+    return self.songDuration;
 }
 
 - (BOOL)songState

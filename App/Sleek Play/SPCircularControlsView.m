@@ -92,6 +92,7 @@
 
 - (void)configureAnimationTimeWithDuration:(CFTimeInterval)duration andStartingPoint:(double)start
 {
+    NSLog(@"ADD ANIMATION");
     // Configure animation
     CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     drawAnimation.duration            = duration; // "animate over 10 seconds or so.."
@@ -118,6 +119,7 @@
 
 - (void)animateSeekStrokeWithEndValue:(float)end
 {
+    NSLog(@"ANIMATE SEEK STROKE");
     [CATransaction setDisableActions:YES];
     self.seekCircle.strokeStart = 0.0f;
     self.seekCircle.strokeEnd = end;
@@ -126,6 +128,7 @@
 
 - (void)pauseAnimation
 {
+    NSLog(@"PAUSE ANIMATION");
     CFTimeInterval pausedTime = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil];
     self.seekCircle.speed = 0.0f;
     self.seekCircle.timeOffset = pausedTime;
@@ -133,6 +136,7 @@
 
 - (void)playAnimation
 {
+    NSLog(@"PLAY ANIMATION");
     CFTimeInterval pausedTime = self.seekCircle.timeOffset;
     self.seekCircle.speed = 1.0f;
     self.seekCircle.timeOffset = 0.0f;
@@ -143,6 +147,7 @@
 
 - (void)playPauseAnimation
 {
+    NSLog(@"Play/Pause ANIMATION");
     if ( [[SPSongStateManager sharedManager] songState] ) {
         [self.delegate didRequestPauseSong];
         [[SPSongStateManager sharedManager] setSongStopped];

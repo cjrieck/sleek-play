@@ -15,6 +15,7 @@
 - (void)setNowPlayingSong:(MPMediaItem *)nowPlayingSong;
 - (MPMediaItem *)currentSong;
 - (NSTimeInterval)currentTimeInSong;
+- (CFTimeInterval)currentSongDuration;
 - (BOOL)songState;
 - (void)setSongPlaying;
 - (void)setSongStopped;

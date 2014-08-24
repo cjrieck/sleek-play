@@ -9,14 +9,12 @@
 #import "SPMusicPlayerController.h"
 #import "SPSongStateManager.h"
 #import "SPSongDataView.h"
-#import "SPSongControlsView.h"
 
 @interface SPMusicPlayerController () <SPCircularControlsDelegate>
 
 @property (strong, nonatomic, readwrite) MPMusicPlayerController *musicPlayerController;
 @property (strong, nonatomic, readwrite) SPCircularControlsView *circularControls;
 @property (strong, nonatomic) SPSongDataView *songDataView;
-@property (strong, nonatomic) SPSongControlsView *songControlsView;
 @property (strong, nonatomic) UIPanGestureRecognizer *panGesture;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureRight;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeGestureLeft;
@@ -107,7 +105,6 @@
     self.previousVolumeLevel = self.musicPlayerController.volume;
     
     [self.view addSubview:self.songDataView];
-    [self.view addSubview:self.songControlsView];
     [self.view addSubview:self.circularControls];
 
 }
