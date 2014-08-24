@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0189A0C319AA5A6B001FE885 /* SPSongStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */; };
 		01B2382B19A7778B00A5DE72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382A19A7778B00A5DE72 /* Foundation.framework */; };
 		01B2382D19A7778B00A5DE72 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382C19A7778B00A5DE72 /* CoreGraphics.framework */; };
 		01B2382F19A7778B00A5DE72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382E19A7778B00A5DE72 /* UIKit.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0189A0C119AA5A6B001FE885 /* SPSongStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongStateManager.h; sourceTree = "<group>"; };
+		0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongStateManager.m; sourceTree = "<group>"; };
 		01B2382719A7778B00A5DE72 /* Sleek Play.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sleek Play.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B2382A19A7778B00A5DE72 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01B2382C19A7778B00A5DE72 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -158,6 +161,8 @@
 		01CA731019A7787800572B45 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				0189A0C119AA5A6B001FE885 /* SPSongStateManager.h */,
+				0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -319,6 +324,7 @@
 				01DB8CA119A77A5B0018C027 /* SPMusicPlayerController.m in Sources */,
 				01B2383719A7778B00A5DE72 /* main.m in Sources */,
 				01DB8CAF19A7B73E0018C027 /* SPCircularControlsView.m in Sources */,
+				0189A0C319AA5A6B001FE885 /* SPSongStateManager.m in Sources */,
 				01DB8CA919A7800B0018C027 /* SPSongDataView.m in Sources */,
 				01B2383B19A7778B00A5DE72 /* SPAppDelegate.m in Sources */,
 				01DB8CAC19A782210018C027 /* SPSongControlsView.m in Sources */,
