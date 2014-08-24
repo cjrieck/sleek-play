@@ -71,6 +71,11 @@
     return self.nowPlayingSong;
 }
 
+- (void)resetCurrentSong
+{
+    [[MPMusicPlayerController iPodMusicPlayer] skipToBeginning];
+}
+
 - (NSTimeInterval)currentTimeInSong
 {
     self.currentPlaybackTime = [[MPMusicPlayerController iPodMusicPlayer] currentPlaybackTime];
