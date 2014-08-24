@@ -21,7 +21,7 @@
 - (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration andStartingPoint:(double)start;
 - (void)animateVolumeStrokeWithEndValue:(float)end;
 - (void)animateSeekStrokeWithEndValue:(float)end;
-- (void)setPlayingStatus:(BOOL)playing;
+//- (void)setPlayingStatus:(BOOL)playing;
 - (void)expandVolumeCircle;
 - (void)compressVolumeCircle;
 

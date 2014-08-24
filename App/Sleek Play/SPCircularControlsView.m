@@ -43,6 +43,13 @@
     self.playPauseCircle.backgroundColor = [UIColor purpleColor];
     [self.playPauseCircle addTarget:self action:@selector(playPause) forControlEvents:UIControlEventTouchUpInside];
     
+    if ( [[MPMusicPlayerController iPodMusicPlayer] playbackState] == MPMoviePlaybackStatePaused ) {
+        self.isPlaying = NO;
+    }
+    else {
+        self.isPlaying = YES;
+    }
+    
     [self addSubview:blurView];
     [self addSubview:self.playPauseCircle];
     
@@ -84,10 +91,10 @@
     return newLayer;
 }
 
-- (void)setPlayingStatus:(BOOL)playing
-{
-    self.isPlaying = playing;
-}
+//- (void)setPlayingStatus:(BOOL)playing
+//{
+//    self.isPlaying = playing;
+//}
 
 - (void)resetSeekCircle
 {
@@ -152,12 +159,14 @@
 {
     if ( self.isPlaying ) {
         [self.delegate didRequestPauseSong];
+        self.isPlaying = NO;
         CFTimeInterval pausedTime = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil];
         self.seekCircle.speed = 0.0f;
         self.seekCircle.timeOffset = pausedTime;
     }
     else {
         [self.delegate didRequestPlaySong];
+        self.isPlaying = YES;
         CFTimeInterval pausedTime = self.seekCircle.timeOffset;
         self.seekCircle.speed = 1.0f;
         self.seekCircle.timeOffset = 0.0f;

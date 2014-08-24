@@ -78,7 +78,7 @@
     
     self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
     self.circularControls.delegate = self;
-    [self.circularControls setPlayingStatus:YES];
+//    [self.circularControls setPlayingStatus:YES];
     
     [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
 
@@ -214,14 +214,14 @@
 
 - (void)didRequestPlaySong
 {
+    NSLog(@"PLAY");
     [self.musicPlayerController play];
-    [self.circularControls setPlayingStatus:YES];
 }
 
 - (void)didRequestPauseSong
 {
+    NSLog(@"PAUSE");
     [self.musicPlayerController pause];
-    [self.circularControls setPlayingStatus:NO];
 }
 
 - (void)hideAndShow
