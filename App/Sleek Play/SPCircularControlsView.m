@@ -7,6 +7,7 @@
 //
 
 #import "SPCircularControlsView.h"
+#import "SPSongStateManager.h"
 
 @interface SPCircularControlsView ()
 
@@ -41,14 +42,7 @@
     self.playPauseCircle.layer.cornerRadius = 55;
     self.playPauseCircle.center = self.center;
     self.playPauseCircle.backgroundColor = [UIColor purpleColor];
-    [self.playPauseCircle addTarget:self action:@selector(playPause) forControlEvents:UIControlEventTouchUpInside];
-    
-    if ( [[MPMusicPlayerController iPodMusicPlayer] playbackState] == MPMoviePlaybackStatePaused ) {
-        self.isPlaying = NO;
-    }
-    else {
-        self.isPlaying = YES;
-    }
+    [self.playPauseCircle addTarget:self action:@selector(playPauseAnimation) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:blurView];
     [self addSubview:self.playPauseCircle];
@@ -130,24 +124,34 @@
     [CATransaction setDisableActions:NO];
 }
 
-- (void)playPause
+- (void)pauseAnimation
 {
-    if ( self.isPlaying ) {
+    CFTimeInterval pausedTime = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil];
+    self.seekCircle.speed = 0.0f;
+    self.seekCircle.timeOffset = pausedTime;
+}
+
+- (void)playAnimation
+{
+    CFTimeInterval pausedTime = self.seekCircle.timeOffset;
+    self.seekCircle.speed = 1.0f;
+    self.seekCircle.timeOffset = 0.0f;
+    self.seekCircle.beginTime = 0.0f;
+    CFTimeInterval timeSincePause = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+    self.seekCircle.beginTime = timeSincePause;
+}
+
+- (void)playPauseAnimation
+{
+    if ( [[SPSongStateManager sharedManager] songState] ) {
         [self.delegate didRequestPauseSong];
-        self.isPlaying = NO;
-        CFTimeInterval pausedTime = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.seekCircle.speed = 0.0f;
-        self.seekCircle.timeOffset = pausedTime;
+        [[SPSongStateManager sharedManager] setSongStopped];
+        [self pauseAnimation];
     }
     else {
         [self.delegate didRequestPlaySong];
-        self.isPlaying = YES;
-        CFTimeInterval pausedTime = self.seekCircle.timeOffset;
-        self.seekCircle.speed = 1.0f;
-        self.seekCircle.timeOffset = 0.0f;
-        self.seekCircle.beginTime = 0.0f;
-        CFTimeInterval timeSincePause = [self.seekCircle convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-        self.seekCircle.beginTime = timeSincePause;
+        [[SPSongStateManager sharedManager] setSongPlaying];
+        [self playAnimation];
     }
 }
 

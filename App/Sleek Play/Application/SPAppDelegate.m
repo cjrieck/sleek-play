@@ -44,29 +44,41 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    NSNumber *duration = [[self.musicPlayerController.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
-    
-    NSTimeInterval songDuration = [duration doubleValue];
-    double currentTime = self.musicPlayerController.musicPlayerController.currentPlaybackTime / songDuration;
-    //    [self.circularControls animateSeekStrokeWithEndValue:currentTime];
-    [self.musicPlayerController.circularControls configureAnimationTimeWithDuration:songDuration-currentTime andStartingPoint:currentTime];
-}
+//- (void)applicationWillEnterForeground:(UIApplication *)application
+//{
+//    NSNumber *duration = [[[SPSongStateManager sharedManager] currentSong] valueForProperty:MPMediaItemPropertyPlaybackDuration];
+//    
+//    NSTimeInterval songDuration = [duration doubleValue];
+//    double currentTime = [[SPSongStateManager sharedManager] currentTimeInSong] / songDuration;
+//    [self.musicPlayerController.circularControls configureAnimationTimeWithDuration:songDuration-currentTime andStartingPoint:currentTime];
+//}
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    if ( [self.musicPlayerController.musicPlayerController playbackState] == MPMusicPlaybackStatePlaying ) {
-        // TODO: Reset to the current playback time here
-    }
+//    MPMediaItem *song = [[MPMusicPlayerController iPodMusicPlayer] nowPlayingItem];
+//    if ( song ) {
+//        NSLog(@"HAS A CURRENTLY PLAYING SONG");
+//        [[SPSongStateManager sharedManager] setNowPlayingSong:song];
+//    }
+    
+//    if ( [self.musicPlayerController.musicPlayerController playbackState] == MPMusicPlaybackStatePlaying ) {
+//        // TODO: Reset to the current playback time here
+//        [[SPSongStateManager sharedManager] setSongPlaying];
+//    }
+    
+//    [self.musicPlayerController.circularControls pauseAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [self.musicPlayerController.musicPlayerController pause];
+    NSLog(@"WILL TERMINATE");
+//    [self.musicPlayerController.musicPlayerController pause];
+//    [[SPSongStateManager sharedManager] setSongStopped];
+    if ( [[SPSongStateManager sharedManager] songState] ) {
+        [self.musicPlayerController.circularControls playPauseAnimation];
+    }
+    
 }
 
 @end

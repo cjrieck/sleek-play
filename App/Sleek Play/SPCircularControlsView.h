@@ -21,6 +21,9 @@
 - (void)configureAnimationTimeWithDuration:(NSTimeInterval)duration andStartingPoint:(double)start;
 - (void)animateVolumeStrokeWithEndValue:(float)end;
 - (void)animateSeekStrokeWithEndValue:(float)end;
+- (void)playPauseAnimation;
+- (void)playAnimation;
+- (void)pauseAnimation;
 
 @property (weak, nonatomic)id<SPCircularControlsDelegate>delegate;
 

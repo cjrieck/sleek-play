@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) MPMediaItem *nowPlayingSong;
 
+@property (assign, nonatomic) NSTimeInterval currentPlaybackTime;
 @property (assign, nonatomic) BOOL isPlaying;
 
 @end
@@ -34,16 +35,16 @@
     if ( self ) {
         
         if ( [[MPMusicPlayerController iPodMusicPlayer] nowPlayingItem] ) {
-            _nowPlayingSong = [[MPMusicPlayerController iPodMusicPlayer] nowPlayingItem];
+//            _nowPlayingSong = [[MPMusicPlayerController iPodMusicPlayer] nowPlayingItem];
+            _currentPlaybackTime = [[MPMusicPlayerController iPodMusicPlayer] currentPlaybackTime];
         }
         else {
             _nowPlayingSong = nil;
+            _currentPlaybackTime = 0.0f;
         }
         
         switch ([[MPMusicPlayerController iPodMusicPlayer] playbackState]) {
             case MPMusicPlaybackStatePlaying:
-            case MPMusicPlaybackStateSeekingForward:
-            case MPMusicPlaybackStateSeekingBackward:
                 _isPlaying = YES;
                 break;
                 
@@ -51,6 +52,8 @@
                 _isPlaying = NO;
                 break;
         }
+        
+        NSLog(@"PLAYING STATE: %@", _isPlaying ? @"YES" : @"NO");
     }
     return self;
 }
@@ -63,6 +66,12 @@
 - (MPMediaItem *)currentSong
 {
     return self.nowPlayingSong;
+}
+
+- (NSTimeInterval)currentTimeInSong
+{
+    self.currentPlaybackTime = [[MPMusicPlayerController iPodMusicPlayer] currentPlaybackTime];
+    return self.currentPlaybackTime;
 }
 
 - (BOOL)songState

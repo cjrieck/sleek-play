@@ -37,15 +37,15 @@
         _musicPlayerController = [MPMusicPlayerController iPodMusicPlayer];
         
         // get all music from ipod library
-        // TODO: make more sophisticated
-        MPMediaQuery *allQuery = [[MPMediaQuery alloc] initWithFilterPredicates:nil];
-        [_musicPlayerController setQueueWithQuery:allQuery];
+        // TODO: Implement a picker
         
-        if ( [_musicPlayerController nowPlayingItem] ) {
+        if ( [[SPSongStateManager sharedManager] currentSong] == nil ) {
             // !!!: Manager handles 'isPlaying' boolean on init
-            [[SPSongStateManager sharedManager] setNowPlayingSong:[_musicPlayerController nowPlayingItem]];
-            [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
+            // TODO: Display picker for user to choose song
         }
+        
+        [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleItemChange)
@@ -96,7 +96,7 @@
     
     self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     self.longPress.numberOfTouchesRequired = 1;
-    self.longPress.minimumPressDuration = 0.33;
+    self.longPress.minimumPressDuration = 0.2f;
     [self.view addGestureRecognizer:self.longPress];
     
     self.singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAndShow)];

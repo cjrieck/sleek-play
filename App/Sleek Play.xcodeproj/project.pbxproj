@@ -23,7 +23,6 @@
 		01DB8CA119A77A5B0018C027 /* SPMusicPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8CA019A77A5B0018C027 /* SPMusicPlayerController.m */; };
 		01DB8CA319A77CFC0018C027 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DB8CA219A77CFC0018C027 /* MediaPlayer.framework */; };
 		01DB8CA919A7800B0018C027 /* SPSongDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8CA819A7800B0018C027 /* SPSongDataView.m */; };
-		01DB8CAC19A782210018C027 /* SPSongControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8CAB19A782210018C027 /* SPSongControlsView.m */; };
 		01DB8CAF19A7B73E0018C027 /* SPCircularControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DB8CAE19A7B73E0018C027 /* SPCircularControlsView.m */; };
 /* End PBXBuildFile section */
 
@@ -62,8 +61,6 @@
 		01DB8CA619A77E0C0018C027 /* UIColor+SPStyleSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+SPStyleSheet.h"; sourceTree = "<group>"; };
 		01DB8CA719A7800B0018C027 /* SPSongDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongDataView.h; sourceTree = "<group>"; };
 		01DB8CA819A7800B0018C027 /* SPSongDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongDataView.m; sourceTree = "<group>"; };
-		01DB8CAA19A782210018C027 /* SPSongControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongControlsView.h; sourceTree = "<group>"; };
-		01DB8CAB19A782210018C027 /* SPSongControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongControlsView.m; sourceTree = "<group>"; };
 		01DB8CAD19A7B73E0018C027 /* SPCircularControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCircularControlsView.h; sourceTree = "<group>"; };
 		01DB8CAE19A7B73E0018C027 /* SPCircularControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCircularControlsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,8 +204,6 @@
 			children = (
 				01DB8CA719A7800B0018C027 /* SPSongDataView.h */,
 				01DB8CA819A7800B0018C027 /* SPSongDataView.m */,
-				01DB8CAA19A782210018C027 /* SPSongControlsView.h */,
-				01DB8CAB19A782210018C027 /* SPSongControlsView.m */,
 				01DB8CAD19A7B73E0018C027 /* SPCircularControlsView.h */,
 				01DB8CAE19A7B73E0018C027 /* SPCircularControlsView.m */,
 			);
@@ -327,7 +322,6 @@
 				0189A0C319AA5A6B001FE885 /* SPSongStateManager.m in Sources */,
 				01DB8CA919A7800B0018C027 /* SPSongDataView.m in Sources */,
 				01B2383B19A7778B00A5DE72 /* SPAppDelegate.m in Sources */,
-				01DB8CAC19A782210018C027 /* SPSongControlsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
