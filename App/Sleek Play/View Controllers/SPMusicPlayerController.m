@@ -42,6 +42,7 @@
         [_musicPlayerController setQueueWithQuery:allQuery];
         
         if ( [_musicPlayerController nowPlayingItem] ) {
+            // !!!: Manager handles 'isPlaying' boolean on init
             [[SPSongStateManager sharedManager] setNowPlayingSong:[_musicPlayerController nowPlayingItem]];
             [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
         }
@@ -80,12 +81,8 @@
     
     self.circularControls = [[SPCircularControlsView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height)];
     self.circularControls.delegate = self;
-//    [self.circularControls setPlayingStatus:YES];
     
     [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
-
-    //    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-//    [self.view addGestureRecognizer:self.panGesture];
     
     self.swipeGestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeR:)];
     self.swipeGestureRight.numberOfTouchesRequired = 1;
@@ -184,6 +181,7 @@
 {
     NSLog(@"Item Changed");
     [[SPSongStateManager sharedManager] setNowPlayingSong:[self.musicPlayerController nowPlayingItem]];
+    [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
     [self.circularControls resetSeekCircle];
     
     NSNumber *duration = [[self.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];
@@ -218,12 +216,14 @@
 - (void)didRequestPlaySong
 {
     NSLog(@"PLAY");
+    [[SPSongStateManager sharedManager] setSongPlaying];
     [self.musicPlayerController play];
 }
 
 - (void)didRequestPauseSong
 {
     NSLog(@"PAUSE");
+    [[SPSongStateManager sharedManager] setSongStopped];
     [self.musicPlayerController pause];
 }
 

@@ -14,5 +14,8 @@
 
 - (void)setNowPlayingSong:(MPMediaItem *)nowPlayingSong;
 - (MPMediaItem *)currentSong;
+- (BOOL)songState;
+- (void)setSongPlaying;
+- (void)setSongStopped;
 
 @end

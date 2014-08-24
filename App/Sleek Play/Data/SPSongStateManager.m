@@ -65,4 +65,19 @@
     return self.nowPlayingSong;
 }
 
+- (BOOL)songState
+{
+    return self.isPlaying;
+}
+
+- (void)setSongPlaying
+{
+    self.isPlaying = YES;
+}
+
+- (void)setSongStopped
+{
+    self.isPlaying = NO;
+}
+
 @end
