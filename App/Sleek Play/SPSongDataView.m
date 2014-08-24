@@ -7,6 +7,7 @@
 //
 
 #import "SPSongDataView.h"
+#import "SPSongStateManager.h"
 
 @interface SPSongDataView ()
 
@@ -40,7 +41,6 @@
     
     const CGFloat width = self.bounds.size.width + 40.0f;
     const CGFloat textLabelHeight = CGRectGetHeight(self.frame)/4.0;
-//    const CGFloat height = self.bounds.size.height + 20.0f;
     
     self.albumCoverView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
     self.albumCoverView.center = self.center;

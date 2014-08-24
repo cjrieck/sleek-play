@@ -91,11 +91,6 @@
     return newLayer;
 }
 
-//- (void)setPlayingStatus:(BOOL)playing
-//{
-//    self.isPlaying = playing;
-//}
-
 - (void)resetSeekCircle
 {
     self.seekCircle.strokeStart = 0.0f;
@@ -117,26 +112,6 @@
     
     // Add the animation to the circle
     [self.seekCircle addAnimation:drawAnimation forKey:@"drawCircleAnimation"];
-}
-
-- (void)expandVolumeCircle
-{
-    float radius = 135.0f;
-    self.volumeCircle.lineWidth = 20;
-    self.volumeCircle.position = CGPointMake(CGRectGetMidX(self.frame)-radius,
-                                             CGRectGetMidY(self.frame)-radius);
-    self.volumeCircle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 2.0*radius, 2.0*radius)
-                                               cornerRadius:radius].CGPath;
-}
-
-- (void)compressVolumeCircle
-{
-//    float radius = 130.0f;
-    self.volumeCircle.lineWidth = 0;
-//    self.volumeCircle.position = CGPointMake(CGRectGetMidX(self.frame)-radius,
-//                                             CGRectGetMidY(self.frame)-radius);
-//    self.volumeCircle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 2.0*radius, 2.0*radius)
-//                                                        cornerRadius:radius].CGPath;
 }
 
 - (void)animateVolumeStrokeWithEndValue:(float)end
