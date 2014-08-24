@@ -60,7 +60,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    if ( [self.musicPlayerController.musicPlayerController playbackState] == MPMoviePlaybackStatePlaying ) {
+    if ( [self.musicPlayerController.musicPlayerController playbackState] == MPMusicPlaybackStatePlaying ) {
         // TODO: Reset to the current playback time here
     }
 }
