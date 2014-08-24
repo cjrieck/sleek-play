@@ -8,6 +8,6 @@
 
 @interface SPSongDataView : UIView
 
-@property (weak, nonatomic) MPMediaItem *currentSong;
+- (void)updateViewForCurrentSong:(MPMediaItem *)currentSong;
 
 @end

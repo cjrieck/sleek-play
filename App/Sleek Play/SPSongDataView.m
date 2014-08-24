@@ -28,11 +28,10 @@
     return self;
 }
 
-- (void)setCurrentSong:(MPMediaItem *)currentSong
+- (void)updateViewForCurrentSong:(MPMediaItem *)currentSong
 {
-    _currentSong = currentSong;
-    [self setPicture];
-    [self setTitleAndArtist];
+    [self setPictureForSong:currentSong];
+    [self setTitleAndArtistForSong:currentSong];
 }
 
 - (void)createSubviews
@@ -58,11 +57,11 @@
     [self addSubview:self.artistLabel];
 }
 
-- (void)setPicture
+- (void)setPictureForSong:(MPMediaItem *)currentSong
 {
     const CGFloat width = self.bounds.size.width + 20.0f;
-    if ( [self.currentSong valueForProperty:MPMediaItemPropertyArtwork] ) {
-        self.albumCoverView.image = [[self.currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:CGSizeMake(width, width)];
+    if ( [currentSong valueForProperty:MPMediaItemPropertyArtwork] ) {
+        self.albumCoverView.image = [[currentSong valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:CGSizeMake(width, width)];
     }
     else {
         // TODO: Put in filler image
@@ -70,10 +69,10 @@
     
 }
 
-- (void)setTitleAndArtist
+- (void)setTitleAndArtistForSong:(MPMediaItem *)currentSong
 {
-    self.songTitleLabel.text = [self.currentSong valueForProperty:MPMediaItemPropertyTitle];
-    self.artistLabel.text = [self.currentSong valueForProperty:MPMediaItemPropertyArtist];
+    self.songTitleLabel.text = [currentSong valueForProperty:MPMediaItemPropertyTitle];
+    self.artistLabel.text = [currentSong valueForProperty:MPMediaItemPropertyArtist];
 }
 
 @end

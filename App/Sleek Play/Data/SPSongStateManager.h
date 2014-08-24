@@ -12,4 +12,7 @@
 
 + (instancetype)sharedManager;
 
+- (void)setNowPlayingSong:(MPMediaItem *)nowPlayingSong;
+- (MPMediaItem *)currentSong;
+
 @end

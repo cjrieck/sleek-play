@@ -7,6 +7,7 @@
 //
 
 #import "SPMusicPlayerController.h"
+#import "SPSongStateManager.h"
 #import "SPSongDataView.h"
 #import "SPSongControlsView.h"
 
@@ -41,7 +42,8 @@
         [_musicPlayerController setQueueWithQuery:allQuery];
         
         if ( [_musicPlayerController nowPlayingItem] ) {
-            self.songDataView.currentSong = [_musicPlayerController nowPlayingItem];
+            [[SPSongStateManager sharedManager] setNowPlayingSong:[_musicPlayerController nowPlayingItem]];
+            [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -115,6 +117,7 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
 }
 
@@ -180,7 +183,7 @@
 - (void)handleItemChange
 {
     NSLog(@"Item Changed");
-    self.songDataView.currentSong = [self.musicPlayerController nowPlayingItem];
+    [[SPSongStateManager sharedManager] setNowPlayingSong:[self.musicPlayerController nowPlayingItem]];
     [self.circularControls resetSeekCircle];
     
     NSNumber *duration = [[self.musicPlayerController nowPlayingItem] valueForProperty:MPMediaItemPropertyPlaybackDuration];

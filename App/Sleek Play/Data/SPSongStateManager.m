@@ -10,7 +10,7 @@
 
 @interface SPSongStateManager ()
 
-@property (strong, nonatomic) MPMediaItem *nowPlayingSong;
+@property (weak, nonatomic) MPMediaItem *nowPlayingSong;
 
 @property (assign, nonatomic) BOOL isPlaying;
 
@@ -58,6 +58,11 @@
 - (void)setNowPlayingSong:(MPMediaItem *)nowPlayingSong
 {
     _nowPlayingSong = nowPlayingSong;
+}
+
+- (MPMediaItem *)currentSong
+{
+    return self.nowPlayingSong;
 }
 
 @end

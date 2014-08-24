@@ -7,6 +7,7 @@
 //
 
 #import "SPAppDelegate.h"
+#import "SPSongStateManager.h"
 #import "SPMusicPlayerController.h"
 
 @interface SPAppDelegate ()
@@ -23,9 +24,6 @@
     
     self.musicPlayerController = [[SPMusicPlayerController alloc] init];
     UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:self.musicPlayerController];
-//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-//    rootNavController.navigationBar.barTintColor = [UIColor blueColor];
-//    rootNavController.navigationBar.frame = CGRectZero;
     [rootNavController.navigationBar setHidden:YES];
     self.window.rootViewController = rootNavController;
     
