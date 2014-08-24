@@ -40,4 +40,12 @@
     [self.musicPlayerController.circularControls configureAnimationTimeWithDuration:[[SPSongStateManager sharedManager] currentSongDuration]-playbackSpot andStartingPoint:playbackSpot/[[SPSongStateManager sharedManager] currentSongDuration]];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    if ( [[SPSongStateManager sharedManager] songState] ) {
+        [[MPMusicPlayerController iPodMusicPlayer] pause];
+        [self.musicPlayerController.circularControls pauseAnimation];
+    }
+}
+
 @end
