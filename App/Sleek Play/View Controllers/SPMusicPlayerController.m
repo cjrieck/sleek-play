@@ -7,6 +7,7 @@
 //
 
 #import "SPMusicPlayerController.h"
+#import "SPSongPickerViewController.h"
 #import "SPSongStateManager.h"
 #import "SPSongDataView.h"
 
@@ -40,6 +41,8 @@
         if ( [[SPSongStateManager sharedManager] currentSong] == nil ) {
             // !!!: Manager handles 'isPlaying' boolean on init
             // TODO: Display picker for user to choose song
+            SPSongPickerViewController *songPicker = [[SPSongPickerViewController alloc] init];
+            [self.navigationController presentViewController:songPicker animated:YES completion:nil];
         }
         
         [self.songDataView updateViewForCurrentSong:[[SPSongStateManager sharedManager] currentSong]];
@@ -82,12 +85,12 @@
     
     [self.circularControls animateVolumeStrokeWithEndValue:self.musicPlayerController.volume];
     
-    self.swipeGestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeR:)];
+    self.swipeGestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     self.swipeGestureRight.numberOfTouchesRequired = 1;
     [self.swipeGestureRight setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:self.swipeGestureRight];
 
-    self.swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeL:)];
+    self.swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     self.swipeGestureLeft.numberOfTouchesRequired = 1;
     [self.swipeGestureLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer:self.swipeGestureLeft];
@@ -147,16 +150,15 @@
     }
 }
 
-- (void)handleSwipeR:(UISwipeGestureRecognizer *)swipeGesture
+- (void)handleSwipe:(UISwipeGestureRecognizer *)swipeGesture
 {
-    [self didRequestPreviousSong];
+    if ( swipeGesture.direction == UISwipeGestureRecognizerDirectionLeft ) {
+        [self didRequestNextSong];
+    }
+    else if ( swipeGesture.direction == UISwipeGestureRecognizerDirectionRight ) {
+        [self didRequestPreviousSong];
+    }
 }
-
-- (void)handleSwipeL:(UISwipeGestureRecognizer *)swipeGesture
-{
-    [self didRequestNextSong];
-}
-
 
 - (void)createParallaxEffectForView:(UIView *)parallaxView
 {

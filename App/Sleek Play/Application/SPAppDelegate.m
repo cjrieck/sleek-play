@@ -20,7 +20,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"LOAD WITH OPTIONS");
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.musicPlayerController = [[SPMusicPlayerController alloc] init];
@@ -37,7 +36,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"ENTER FOREGROUND");
     NSTimeInterval playbackSpot = [[SPSongStateManager sharedManager] currentTimeInSong];
     
     [self.musicPlayerController.circularControls animateSeekStrokeWithEndValue:playbackSpot/[[SPSongStateManager sharedManager] currentSongDuration]];

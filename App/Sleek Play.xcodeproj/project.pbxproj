@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01870DEB19B24255005E15F8 /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 01870DEA19B24255005E15F8 /* UIView+Screenshot.m */; };
 		0189A0C319AA5A6B001FE885 /* SPSongStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */; };
+		01AC5B0C19B1149500C0E683 /* SPSongPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AC5B0B19B1149500C0E683 /* SPSongPickerViewController.m */; };
+		01AC5B1019B1157500C0E683 /* SPSongPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AC5B0F19B1157500C0E683 /* SPSongPickerDataSource.m */; };
 		01B2382B19A7778B00A5DE72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382A19A7778B00A5DE72 /* Foundation.framework */; };
 		01B2382D19A7778B00A5DE72 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382C19A7778B00A5DE72 /* CoreGraphics.framework */; };
 		01B2382F19A7778B00A5DE72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B2382E19A7778B00A5DE72 /* UIKit.framework */; };
@@ -37,8 +40,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01870DE919B24255005E15F8 /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
+		01870DEA19B24255005E15F8 /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
 		0189A0C119AA5A6B001FE885 /* SPSongStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongStateManager.h; sourceTree = "<group>"; };
 		0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongStateManager.m; sourceTree = "<group>"; };
+		01AC5B0A19B1149500C0E683 /* SPSongPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongPickerViewController.h; sourceTree = "<group>"; };
+		01AC5B0B19B1149500C0E683 /* SPSongPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongPickerViewController.m; sourceTree = "<group>"; };
+		01AC5B0E19B1157500C0E683 /* SPSongPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSongPickerDataSource.h; sourceTree = "<group>"; };
+		01AC5B0F19B1157500C0E683 /* SPSongPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSongPickerDataSource.m; sourceTree = "<group>"; };
 		01B2382719A7778B00A5DE72 /* Sleek Play.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sleek Play.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B2382A19A7778B00A5DE72 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01B2382C19A7778B00A5DE72 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -90,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01AC5B0D19B1155A00C0E683 /* Data Sources */ = {
+			isa = PBXGroup;
+			children = (
+				01AC5B0E19B1157500C0E683 /* SPSongPickerDataSource.h */,
+				01AC5B0F19B1157500C0E683 /* SPSongPickerDataSource.m */,
+			);
+			name = "Data Sources";
+			sourceTree = "<group>";
+		};
 		01B2381E19A7778B00A5DE72 = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +176,7 @@
 		01CA731019A7787800572B45 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				01AC5B0D19B1155A00C0E683 /* Data Sources */,
 				0189A0C119AA5A6B001FE885 /* SPSongStateManager.h */,
 				0189A0C219AA5A6B001FE885 /* SPSongStateManager.m */,
 			);
@@ -177,6 +196,8 @@
 			children = (
 				01DB8C9F19A77A5B0018C027 /* SPMusicPlayerController.h */,
 				01DB8CA019A77A5B0018C027 /* SPMusicPlayerController.m */,
+				01AC5B0A19B1149500C0E683 /* SPSongPickerViewController.h */,
+				01AC5B0B19B1149500C0E683 /* SPSongPickerViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -215,6 +236,8 @@
 			children = (
 				01DB8CA519A77DD10018C027 /* SPStyleSheet.h */,
 				01DB8CA619A77E0C0018C027 /* UIColor+SPStyleSheet.h */,
+				01870DE919B24255005E15F8 /* UIView+Screenshot.h */,
+				01870DEA19B24255005E15F8 /* UIView+Screenshot.m */,
 			);
 			name = Appearance;
 			sourceTree = "<group>";
@@ -317,10 +340,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DB8CA119A77A5B0018C027 /* SPMusicPlayerController.m in Sources */,
+				01AC5B0C19B1149500C0E683 /* SPSongPickerViewController.m in Sources */,
 				01B2383719A7778B00A5DE72 /* main.m in Sources */,
 				01DB8CAF19A7B73E0018C027 /* SPCircularControlsView.m in Sources */,
 				0189A0C319AA5A6B001FE885 /* SPSongStateManager.m in Sources */,
 				01DB8CA919A7800B0018C027 /* SPSongDataView.m in Sources */,
+				01AC5B1019B1157500C0E683 /* SPSongPickerDataSource.m in Sources */,
+				01870DEB19B24255005E15F8 /* UIView+Screenshot.m in Sources */,
 				01B2383B19A7778B00A5DE72 /* SPAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
